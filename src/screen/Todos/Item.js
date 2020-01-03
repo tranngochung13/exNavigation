@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,12 +10,12 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import { Constants } from 'react-native-navigation';
+import {Constants} from 'react-native-navigation';
 import * as actions from '../../redux/actions/todoListAction/todoAction';
-import { connect } from 'react-redux';
-import DatePicker from 'react-native-datepicker';
+import {connect} from 'react-redux';
 import Swipeout from 'react-native-swipeout';
-import { Navigation } from 'react-native-navigation';
+import {Navigation} from 'react-native-navigation';
+import {onShowModalEdit} from '../../navigation';
 
 class Item extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class Item extends Component {
                   },
                 },
               ],
-              { cancelable: true },
+              {cancelable: true},
             );
           },
           text: 'Delete',
@@ -80,14 +80,9 @@ class Item extends Component {
                           rightButtons: [
                             {
                               id: 'close',
-                              // text: 'Come Back',
                               icon: require('../asset/image/comback.png'),
-                              // fontSize: 1,
                             },
                           ],
-                          // backButton: {
-                          //   visible: true,
-                          // },
                         },
                       },
                     },
@@ -102,7 +97,7 @@ class Item extends Component {
       ],
     };
 
-    const { item } = this.props;
+    const {item} = this.props;
 
     return (
       <View style={styles.item}>

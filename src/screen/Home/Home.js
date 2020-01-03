@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Text,
@@ -8,13 +8,10 @@ import {
   TouchableOpacity,
   BackHandler,
 } from 'react-native';
-
-import { DATA } from '../../utils/contans';
-import { Navigation } from 'react-native-navigation';
-// import { connect } from 'redux';
-// import connect from './../Todos/TodoList';
-import { connect } from 'react-redux';
-
+import {DATA} from '../../utils/contans';
+import {Navigation} from 'react-native-navigation';
+import {connect} from 'react-redux';
+import {onShowModalDetail} from '../../navigation';
 
 class Home extends Component {
   componentDidMount() {
@@ -34,50 +31,16 @@ class Home extends Component {
   };
 
   onPressItem = item => {
-    //
-    Navigation.showModal({
-      stack: {
-        children: [
-          {
-            component: {
-              name: 'Detail',
-              passProps: {
-                data: item,
-              },
-              options: {
-                topBar: {
-                  title: {
-                    text: item.title,
-                    fontSize: 30,
-                    alignment: 'center',
-                  },
-                  rightButtons: [
-                    {
-                      id: 'close',
-                      // text: 'Come Back',
-                      icon: require('../asset/image/comback.png'),
-                      // fontSize: 1,
-                    },
-                  ],
-                  // backButton: {
-                  //   visible: true,
-                  // },
-                },
-              },
-            },
-          },
-        ],
-      },
-    });
+    onShowModalDetail(item);
   };
 
-  renderItem = ({ item }) => {
+  renderItem = ({item}) => {
     return (
       <>
         <TouchableOpacity
           style={styles.item}
           onPress={() => this.onPressItem(item)}>
-          <Image style={styles.imageThumbnail} source={{ uri: item.imageUrl }} />
+          <Image style={styles.imageThumbnail} source={{uri: item.imageUrl}} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.item}
@@ -104,8 +67,8 @@ class Home extends Component {
           data={DATA}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => index}
-        // onEndThread => load data
-        // onRefresh
+          // onEndThread => load data
+          // onRefresh
         />
       </View>
     );
@@ -138,17 +101,16 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const mapStateToProps = state => {
   return {
-    userData: state.user
+    userData: state.user,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     // registerHandle: (data) => dispatch(addUser(data))
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

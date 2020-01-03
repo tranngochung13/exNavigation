@@ -38,8 +38,6 @@ class Edit extends Component {
     Navigation.dismissModal(this.props.componentId);
   };
 
-
-
   componentDidMount() {
     const { data } = this.props;
     this.setState({
@@ -48,7 +46,6 @@ class Edit extends Component {
       date: data.date,
     });
   }
-
 
   render() {
     const { title, date } = this.state;
@@ -67,17 +64,6 @@ class Edit extends Component {
             format="DD-MM-YYYY"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
-            // customStyles={{
-            //   dateIcon: {
-            //     position: 'absolute',
-            //     left: 0,
-            //     top: 4,
-            //     marginLeft: 0,
-            //   },
-            //   dateInput: {
-            //     marginLeft: 36,
-            //   },
-            // }}
             onDateChange={date => {
               this.setState({ date: date });
             }}
@@ -91,6 +77,7 @@ class Edit extends Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   header: {
     position: 'relative',

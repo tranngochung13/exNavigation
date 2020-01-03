@@ -1,81 +1,75 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, SafeAreaView, ScrollView, Text} from 'react-native';
-import Form from './Form';
-import Submit from './Button';
-import Home from '../Home/Home';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  AsyncStorage,
+} from 'react-native';
+import Form from '../../components/Form';
+import Submit from '../../components/Button';
 import {Navigation} from 'react-native-navigation';
-import Profile from '../Profile';
-import Detail from '../Home/Detail';
-import TodoList from '../Todos/TodoList';
-import Edit from '../Todos/Edit';
 import {Provider} from 'react-redux';
 import store from '../../redux/store';
-import {onChangeIntoMainScreen} from '../../navigation';
+import {onChangeIntoMainScreen, onRegister} from '../../navigation';
 import {loginUser} from '../../redux/actions/userAction/action';
 import {connect} from 'react-redux';
 
-function ReduxProvider(Component) {
-  return props => (
-    <Provider store={store}>
-      <Component {...props} />
-    </Provider>
-  );
-}
-
-Navigation.registerComponent(
-  'Edit',
-  () => ReduxProvider(Edit),
-  () => Edit,
-);
-
-Navigation.registerComponent(
-  'Profile',
-  () => ReduxProvider(Profile),
-  () => Profile,
-);
-Navigation.registerComponent(
-  'Detail',
-  () => ReduxProvider(Detail),
-  () => Detail,
-);
-Navigation.registerComponent(
-  'TodoList',
-  () => ReduxProvider(TodoList),
-  () => TodoList,
-);
-// Navigation.registerComponent('Edit', () => Edit);
-
-// export default connect(null)(Index);
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       secure: true,
 
-      email: 'hang@gmail.com',
-      password: 'hang2807',
+      email: 'tranngochung1302@gmail.com',
+      password: '0965243205',
 
-      usernameError: '',
+      emailError: '',
       passwordError: '',
+
+      loading: false,
     };
   }
 
   onRestart = () => {
-    this.setState({usernameError: ''});
+    this.setState({emailError: ''});
     this.setState({passwordError: ''});
   };
 
-  // onPress = () => {
-  //   onChangeIntoMainScreen();
-  // };
+  componentDidMount() {
+    AsyncStorage.getItem('@login:email').then(email => {
+      if (!email || email === '') {
+        this.setState({loading: true});
+      } else {
+        this.onLogin(email);
+      }
+    });
+  }
 
-  onPress = () => {
+  onLogin = () => {
     const {email, password} = this.state;
     const data = {
       email: email,
       password: password,
     };
-    this.props.loginHandle(data);
+
+    this.onRestart();
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (data.email === '') {
+      this.setState({emailError: 'You need type email'});
+    } else if (reg.test(data.email) === false) {
+      this.setState({emailError: 'Email wrong'});
+    } else if (data.password === '') {
+      this.setState({passwordError: 'You need type password'});
+    } else {
+      this.props.loginHandle(data);
+      AsyncStorage.setItem('@login:email', this.state.email);
+    }
+    // if (!this.props.loginHandle(data)) {
+    //   AsyncStorage.setItem('@login:email', this.state.email);
+    //   this.props.Login(this.state.email);
+    // }
   };
 
   onChangeText = (key, value) => {
@@ -85,19 +79,20 @@ class Login extends Component {
   };
 
   render() {
+    if (!this.state.loading) {
+      return <View />;
+    }
     return (
       <>
         <SafeAreaView style={styles.container}>
           <ScrollView style={styles.scrollView}>
             <Form
-              value={this.state.email}
-              labelName="Username*"
-              placeHolder="john123"
+              labelName="Email*"
+              placeHolder="john123@gmail.com"
               getData={val => this.onChangeText('email', val)}
-              valueError={this.state.usernameError}
+              valueError={this.state.emailError}
             />
             <Form
-              value={this.state.password}
               labelName="Password*"
               placeHolder="****************"
               getData={val => this.onChangeText('password', val)}
@@ -106,37 +101,11 @@ class Login extends Component {
             />
 
             <View style={styles.buttonSubmit}>
-              <Submit submit={this.onPress} labelSubmit="Login" />
+              <Submit submit={this.onLogin} labelSubmit="Login" />
             </View>
 
             <View>
-              <Text
-                onPress={() =>
-                  Navigation.setRoot({
-                    root: {
-                      stack: {
-                        children: [
-                          {
-                            component: {
-                              name: 'Register',
-                              options: {
-                                topBar: {
-                                  title: {
-                                    text: 'Register',
-                                    alignment: 'center',
-                                    fontSize: 30,
-                                  },
-                                },
-                              },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  })
-                }>
-                Register
-              </Text>
+              <Text onPress={() => onRegister()}>Register</Text>
             </View>
           </ScrollView>
         </SafeAreaView>

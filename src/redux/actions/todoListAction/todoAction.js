@@ -3,8 +3,7 @@ export const DELETE_TASK = 'DELETE_TASK';
 export const UPDATE_TASK = ' UPDATE_TASK';
 
 import _ from 'lodash';
-import store from './../../store';
-
+import store from '../../store';
 
 export const addTask = newItem => {
   const tasks = store.getState().task.tasks;
@@ -15,8 +14,6 @@ export const addTask = newItem => {
     payload: [...tasks, newItem],
   };
 };
-
-
 
 export const onDeleteTask = id => {
   const tasks = store.getState().task.tasks;

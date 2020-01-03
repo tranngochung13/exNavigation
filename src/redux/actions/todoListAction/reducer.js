@@ -16,7 +16,6 @@ const initialState = {
   ],
 };
 
-
 const app = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TASK:

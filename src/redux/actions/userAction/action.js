@@ -6,6 +6,8 @@ export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_FAILURE = ' LOGIN_USER_FAILURE';
 
+export const LOGOUT_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
+
 export const addUser = data => {
     return {
         type: ADD_USER,
@@ -40,9 +42,17 @@ export const loginUserSuccess = data => {
         payload: data,
     };
 };
+
 export const loginUserFailure = error => {
     return {
         type: LOGIN_USER_FAILURE,
         payload: error,
+    };
+};
+
+export const logoutUserSuccess = data => {
+    return {
+        type: LOGOUT_USER_SUCCESS,
+        payload: data,
     };
 };

@@ -2,6 +2,7 @@ import {call, put, takeLatest} from 'redux-saga/effects';
 import * as Types from './action';
 import {register, login} from '../../../api/user';
 import {onChangeIntoMainScreen} from '../../../navigation';
+import {AsyncStorage} from 'react-native';
 
 function* registerSaga(action) {
   try {
@@ -19,10 +20,13 @@ function* loginSaga(action) {
   try {
     const response = yield call(login, action.payload);
     yield put(Types.loginUserSuccess(response.data));
+    // AsyncStorage.setItem(
+    //   'Token',
+    //   JSON.stringify(response.data.token),
+    // );
     onChangeIntoMainScreen();
   } catch (error) {
     // console.log(error.response.data.statusCode);
-
     yield put(Types.loginUserFailure({error}));
   }
 }

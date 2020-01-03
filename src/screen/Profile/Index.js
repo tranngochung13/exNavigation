@@ -1,37 +1,27 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Button, Text} from 'react-native';
+import {View, Button, Text, AsyncStorage} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import Login from '../Login';
-import axios from 'axios';
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    const {data} = this.props.user;
   }
-  // state = {
-  //   persons: [],
-  // };
-  // componentDidMount() {
-  //   axios.get(`https://jsonplaceholder.typicode.com/users`).then(res => {
-  //     const persons = res.data;
-  //     this.setState({persons});
-  //   });
-  // }
+
   render() {
-    console.log('email', this.props.user.email);
+    const {email, username} = this.props.user.user;
+    const data = {
+      email: email,
+      username: username,
+    };
     return (
       <View>
-        {/* {this.state.persons.map(person => (
-          <View>
-            <Text>{person.name}</Text>
-            <Text>{person.email}</Text>
-          </View>
-        ))} */}
-        <Text>{this.props.user.email}</Text>
+        <Text>{email}</Text>
+        <Text>{username}</Text>
         <Button
           onPress={() => {
+            AsyncStorage.removeItem('@login:email');
             Navigation.setRoot({
               root: {
                 stack: {
@@ -65,9 +55,10 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = data => {
+const mapStateToProps = state => {
+  console.log('state.user', state.user);
   return {
-    user: data,
+    user: state.user,
   };
 };
 
